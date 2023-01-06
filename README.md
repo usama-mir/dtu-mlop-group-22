@@ -1,8 +1,16 @@
 DTU - MLOPS - Group 22
 ==============================
-
-
-A short description of the project.
+# Link: https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge/overview
+# Topic: Toxic Comment Classification
+# Dataset
+1. train.csv : the training set, contains comments with their binary labels
+2. test.csv : the test set, you must predict the toxicity probabilities for these comments. To deter hand labeling, the test set contains some comments which are not included in scoring.
+3. sample_submission.csv : a sample submission file in the correct format
+4. test_labels.csv : labels for the test data; value of -1 indicates it was not used for scoring
+# Model
+- For the project, DistilBERT is going to be used. DistilBERT is a distilled version of BERT (Bidirectional Encoder Representations from Transformers), which is a popular language model developed by researchers at Google. Compared to original BERT, DistilBERT has fewer parameters. Despite having fewer parameters, DistilBERT is able to achieve good performance on a wide range of natural language processing tasks, including sentiment analysis, question answering, and language translation.
+# Chosen framework
+- PyTorch is going to be used for this project. General structure would be cookiecutter for organising project's code base as well as docker for cotainerisation, and for configuration, hydra is going to be used. Logging would be shown by using wandb. Lastly, the project would do continious integration by using cloud deployment on Google. 
 
 Project Organization
 ------------
