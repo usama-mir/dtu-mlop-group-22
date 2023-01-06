@@ -98,33 +98,33 @@ class ModelTrainer:
         return train_acc_epochs, train_loss_epochs, val_acc_epochs, val_loss_epochs
 
     
-def Evaluate_Model(self, model,Test_DL):
-    
+    def Evaluate_Model(self, model,Test_DL):
+        
 
-    model.eval()
-    
-    accTest = []
-    Test_loss = 0
-    for comments, labels in Test_DL:
-        labels = labels.to(self.device)
-        labels = labels.float()
-        masks = comments["attention_mask"].squeeze(1).to(self.device)
-        input_ids = comments["input_ids"].squeeze(1).to(self.device)
-    
-        output = model(input_ids, masks)
-        loss = self.Loss(output.logits, labels)
-        Test_loss += loss.item()
-            
-        op = output.logits
-        correct_val = 0
-        for i in range(7):
-            res = 1 if op[0,i]>0.5 else 0
-            if res == labels[0,i]:
-                correct_val += 1
-        accTest.append(correct_val/7)
-    
-    print("Testing Dataset:\n")
-    print(f" Test Loss:{Test_loss/len(Test_DL):.4f} | Test Accuracy:{sum(accTest)/len(accTest):.4f}")
+        model.eval()
+        
+        accTest = []
+        Test_loss = 0
+        for comments, labels in Test_DL:
+            labels = labels.to(self.device)
+            labels = labels.float()
+            masks = comments["attention_mask"].squeeze(1).to(self.device)
+            input_ids = comments["input_ids"].squeeze(1).to(self.device)
+        
+            output = model(input_ids, masks)
+            loss = self.Loss(output.logits, labels)
+            Test_loss += loss.item()
+                
+            op = output.logits
+            correct_val = 0
+            for i in range(7):
+                res = 1 if op[0,i]>0.5 else 0
+                if res == labels[0,i]:
+                    correct_val += 1
+            accTest.append(correct_val/7)
+        
+        print("Testing Dataset:\n")
+        print(f" Test Loss:{Test_loss/len(Test_DL):.4f} | Test Accuracy:{sum(accTest)/len(accTest):.4f}")
 
 
 if __name__ == "__main__":
