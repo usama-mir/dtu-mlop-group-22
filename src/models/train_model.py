@@ -92,8 +92,6 @@ class ModelTrainer:
 
     
     def Evaluate_Model(self,Test_DL):
-        
-
         self.model.eval()
         
         accTest = []
