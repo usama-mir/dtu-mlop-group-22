@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+
+  training:
+    build:
+      dockerfile: ./images/training/Dockerfile
+      context: .
