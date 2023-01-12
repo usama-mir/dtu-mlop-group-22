@@ -8,9 +8,10 @@ from torch.optim.lr_scheduler import StepLR
 import torch
 from model import Distil_bert
 import pandas as pd 
-from data import Toxic_Dataset
+from dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
 import numpy as np 
+from torch.utils.data import DataLoader, Dataset
 
 class ModelTrainer:
     def __init__(self, model, learning_rate, epochs):
@@ -33,14 +34,14 @@ class ModelTrainer:
         val_loss_epochs = []
         
         for epoch in range(self.epochs):
-
+            print(epoch)
             training_loss = {}
             training_accuracy = {}
             validation_loss = {}
             validation_accuracy = {}
             batch = 0
         
-            for comments, labels in tqdm(Train_DL):
+            for comments, labels in iter(Train_DL):
                 
                 
                 labels = torch.from_numpy(labels).to(self.device)
@@ -145,21 +146,36 @@ if __name__ == "__main__":
     
     #now run the data through the toxic dataset 
     #then call the train function and hope for the best
-    data = pd.read_csv('./data/processed/train_processed.csv', nrows=100)
+    data = pd.read_csv('./data/processed/train_processed.csv', nrows=20)
     print(data.head(10))
     #print(data.head(20))
     
     X_train, X_val, Y_train, Y_val = train_test_split(pd.DataFrame(data.iloc[:,1]),pd.DataFrame(data.iloc[:,2:]), test_size=0.1, stratify=data.iloc[:,9])
     Y_train.drop(columns=["total_classes"], inplace=True)
     Y_val.drop(columns=["total_classes"], inplace=True)
-    X_train = pd.DataFrame(X_train)
-    X_val = pd.DataFrame(X_val)
-    Y_train = pd.DataFrame(Y_train)
-    Y_val = pd.DataFrame(Y_val)
+    print(Y_train.columns)
+    print(Y_val.columns)
+    print()
+    X_train = pd.DataFrame(X_train).reset_index(drop=True)
+    X_val = pd.DataFrame(X_val).reset_index(drop=True)
+    Y_train = pd.DataFrame(Y_train).reset_index(drop=True)
+    Y_val = pd.DataFrame(Y_val).reset_index(drop=True)
+    X_train.to_csv('X_train.csv')
+
     #drop total classes 
+    # Making Training, Testing and Validation of data using Dataset class
+    Train_data = Toxic_Dataset(X_train, Y_train)
+    #Test_data = Toxic_Dataset(X_test, Y_test)
+    Val_data = Toxic_Dataset(X_val, Y_val)
+
+    # Making datasets into batches 
+    Train_Loader = DataLoader(Train_data, batch_size=32, shuffle=True)
+    #Test_Loader = DataLoader(Test_data, shuffle=True)        #batch_size=16, 
+    Val_Loader = DataLoader(Val_data, shuffle=True)          #batch_size=16, 
+    
     Train_DL  = Toxic_Dataset(X_train, Y_train)
     Val_DL = Toxic_Dataset(X_val, Y_val)
     #print(X_train)
     #print(X_train.to_frame().columns)
     
-    trainer.train(Train_DL,Val_DL)
+    trainer.train(Train_Loader,Val_Loader)
