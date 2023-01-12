@@ -56,7 +56,7 @@ end of the project.
 * [x] Create the initial file structure using cookiecutter
 * [x] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
 * [x] Add a model file and a training script and get that running (M)
-* [ ] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using (N)
+* [x] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using (N)
 * [ ] Remember to comply with good coding practices (`pep8`) while doing the project (Pol)
 * [ ] Do a bit of code typing and remember to document essential parts of your code (Pol)
 * [x] Setup version control for your data or part of your data
@@ -105,7 +105,7 @@ end of the project.
 >
 > Answer:
 
---- question 1 fill here ---
+Group 22
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -116,7 +116,7 @@ end of the project.
 >
 > Answer:
 
---- question 2 fill here ---
+s184424, s134187, s222433, s183190, s221623
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -129,7 +129,7 @@ end of the project.
 >
 > Answer:
 
---- question 3 fill here ---
+cookie-clutter, github, dvc, docker, hydra, wardb, pytest, gcp-bucket, google cloud, fastAPI
 
 ## Coding environment
 
@@ -148,7 +148,7 @@ end of the project.
 >
 > Answer:
 
---- question 4 fill here ---
+We created a requirements.txt file using pipreqs, which means that only the dependencies we are actually using are included in the file. If a new team member joined the team, they simply needed to create an environment, we recommend a conda-environment, and run the following command to get the dependencies: 'pip install -r requirements.txt'
 
 ### Question 5
 
@@ -212,7 +212,7 @@ end of the project.
 
 ### Question 9
 
-> **Did you workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and**
+> **Did your workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and**
 > **pull request can help improve version control.**
 >
 > Answer length: 100-200 words.
@@ -223,7 +223,7 @@ end of the project.
 >
 > Answer:
 
---- question 9 fill here ---
+We used branching-strategy which means that every feature was created on separated braches and later merged into the main branch. It wasn't allowed to push directly to main after the first week. We put a branch protection rule on main, which ensure no accidents. Besides that we used github actions to make sure new code passed the unit-tests before pushing.
 
 ### Question 10
 
@@ -238,7 +238,7 @@ end of the project.
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC for data storage of the raw data, this was mainly a choice as it isn't nice to have the datafiles stored on GitHub. Also, since we're working with text-data and there's a million different ways to clean up the data, it's super easy to add some extra cleaning steps in the make_dataset.py file. 
 
 ### Question 11
 
