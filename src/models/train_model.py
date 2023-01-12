@@ -41,23 +41,19 @@ class ModelTrainer:
             validation_accuracy = {}
             batch = 0
         
-            for comments, labels in iter(Train_DL):
-                
-                
-                labels = torch.from_numpy(labels).to(self.device)
-                labels = labels.float()
+            for comments, labels in tqdm(Train_DL):
+                labels = labels.float().to(self.device)
                 masks = comments["attention_mask"].squeeze(1).to(self.device) # the model used these masks to attend only to the non-padded tokens in the sequence
                 input_ids = comments["input_ids"].squeeze(1).to(self.device) # contains the tokenized and indexed representation for a batch of comments
                 # squeeze is used to remove the second dimension which has size 1.
                 output = self.model(input_ids, masks) # vector of logits for each class
-                labels = torch.t(labels.unsqueeze(1))
+                #labels = torch.t(labels.unsqueeze(1))
                 loss = self.Loss(output.logits, labels) # compute the loss
                 
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
                 self.scheduler.step()
-
                 
                 """batch += 1 
                 if batch%53 == 0:
@@ -141,21 +137,21 @@ class ModelTrainer:
 if __name__ == "__main__":
     trainer = ModelTrainer(Distil_bert, 0.01, 10)
     import os 
-    print(os.getcwd())
+    #print(os.getcwd())
     
     
     #now run the data through the toxic dataset 
     #then call the train function and hope for the best
     data = pd.read_csv('./data/processed/train_processed.csv', nrows=20)
-    print(data.head(10))
+    #print(data.head(10))
     #print(data.head(20))
     
     X_train, X_val, Y_train, Y_val = train_test_split(pd.DataFrame(data.iloc[:,1]),pd.DataFrame(data.iloc[:,2:]), test_size=0.1, stratify=data.iloc[:,9])
     Y_train.drop(columns=["total_classes"], inplace=True)
     Y_val.drop(columns=["total_classes"], inplace=True)
-    print(Y_train.columns)
-    print(Y_val.columns)
-    print()
+    # print(Y_train.columns)
+    # print(Y_val.columns)
+    # print()
     X_train = pd.DataFrame(X_train).reset_index(drop=True)
     X_val = pd.DataFrame(X_val).reset_index(drop=True)
     Y_train = pd.DataFrame(Y_train).reset_index(drop=True)
