@@ -7,17 +7,18 @@ from tqdm import tqdm
 from torch.nn import BCELoss
 from torch.optim.lr_scheduler import StepLR
 import torch
-from model import Distil_bert
+from src.models.model import Distil_bert
 import pandas as pd
-from dataset import Toxic_Dataset
+from src.data.dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
 import numpy as np
 from torch.utils.data import DataLoader, Dataset
+import torch.nn as nn
 
 
-class ModelTrainer:
+class ModelTrainer(nn.Module):
     def __init__(self, model, learning_rate, epochs):
-
+        super(ModelTrainer, self).__init__()
         self.model = model
         self.optimizer = Adam(params=model.parameters(), lr=learning_rate)
         self.Loss = BCELoss()
