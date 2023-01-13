@@ -95,7 +95,7 @@ class ModelTrainer(nn.Module):
                 val_acc_epochs.append(validation_accuracy)
                 val_loss_epochs.append(validation_loss)
 
-        torch.save(self.model.state_dict(), "models/model_epoch{}.pth".format(self.epochs))
+        torch.save(self.model, "models/model_epoch{}.pth".format(self.epochs))
 
         return train_acc_epochs, train_loss_epochs, val_acc_epochs, val_loss_epochs
 
@@ -134,7 +134,7 @@ if __name__ == "__main__":
 
     # now run the data through the toxic dataset
     # then call the train function and hope for the best
-    data = pd.read_csv("./data/processed/train_processed.csv", nrows=1000)
+    data = pd.read_csv("./data/processed/train_processed.csv", nrows=100)
     # print(data.head(10))
     # print(data.head(20))
 
