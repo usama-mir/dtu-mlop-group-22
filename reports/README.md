@@ -57,7 +57,7 @@ end of the project.
 * [x] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
 * [x] Add a model file and a training script and get that running (M)
 * [x] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using (N)
-* [ ] Remember to comply with good coding practices (`pep8`) while doing the project (Pol)
+* [x] Remember to comply with good coding practices (`pep8`) while doing the project (Pol)
 * [ ] Do a bit of code typing and remember to document essential parts of your code (Pol)
 * [x] Setup version control for your data or part of your data
 * [ ] Construct one or multiple docker files for your code (U, N)
@@ -69,16 +69,18 @@ end of the project.
 * [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
       consider running a hyperparameter optimization sweep. (Pol)
 * [ ] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code 
+* [ ] Rewrite 'predict' (Pol)
+* [ ] Improve model (Pol)
 
 ### Week 2
 
 * [ ] Write unit tests related to the data part of your code (S)
-* [ ] Write unit tests related to model construction and or model training
-* [ ] Calculate the coverage.
-* [ ] Get some continuous integration running on the github repository
-* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
-* [ ] Create a trigger workflow for automatically building your docker images
-* [ ] Get your model training in GCP using either the Engine or Vertex AI
+* [ ] Write unit tests related to model construction and or model training (M, S)
+* [ ] Calculate the coverage. (S, M)
+* [ ] Get some continuous integration running on the github repository (U,N)
+* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup (N)
+* [ ] Create a trigger workflow for automatically building your docker images (U,N)
+* [ ] Get your model training in GCP using either the Engine or Vertex AI 
 * [ ] Create a FastAPI application that can do inference using your model
 * [ ] If applicable, consider deploying the model locally using torchserve
 * [ ] Deploy your model in GCP using either Functions or Run as the backend
