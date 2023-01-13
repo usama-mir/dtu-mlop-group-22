@@ -127,15 +127,11 @@ class ModelTrainer:
 
 if __name__ == "__main__":
     trainer = ModelTrainer(Distil_bert, 0.01, 10)
-    import os
 
-    # print(os.getcwd())
 
     # now run the data through the toxic dataset
     # then call the train function and hope for the best
     data = pd.read_csv("./data/processed/train_processed.csv", nrows=1000)
-    # print(data.head(10))
-    # print(data.head(20))
 
     X_train, X_val, Y_train, Y_val = train_test_split(
         pd.DataFrame(data.iloc[:, 1]),
@@ -145,26 +141,20 @@ if __name__ == "__main__":
     )
     Y_train.drop(columns=["total_classes"], inplace=True)
     Y_val.drop(columns=["total_classes"], inplace=True)
-    # print(Y_train.columns)
-    # print(Y_val.columns)
-    # print()
+
     X_train = pd.DataFrame(X_train).reset_index(drop=True)
     X_val = pd.DataFrame(X_val).reset_index(drop=True)
     Y_train = pd.DataFrame(Y_train).reset_index(drop=True)
     Y_val = pd.DataFrame(Y_val).reset_index(drop=True)
-    X_train.to_csv("X_train.csv")
 
     # drop total classes
     # Making Training, Testing and Validation of data using Dataset class
     Train_data = Toxic_Dataset(X_train, Y_train)
-    # Test_data = Toxic_Dataset(X_test, Y_test)
     Val_data = Toxic_Dataset(X_val, Y_val)
 
     Train_DL = Toxic_Dataset(X_train, Y_train)
     Train_Loader = DataLoader(Train_DL, batch_size=32, shuffle=True)
     Val_DL = Toxic_Dataset(X_val, Y_val)
     Val_Loader = DataLoader(Val_DL, batch_size=32, shuffle=True)
-    # print(X_train)
-    # print(X_train.to_frame().columns)
 
     trainer.train(Train_Loader, Val_Loader)
