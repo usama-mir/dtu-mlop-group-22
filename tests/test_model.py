@@ -1,6 +1,5 @@
 from src.models.model import Distil_bert
-from src.models import train_model
-from transformers import DistilBertForSequenceClassification,DistilBertModel, DistilBertTokenizer, DistilBertForTokenClassification, DistilBertConfig
+from transformers import DistilBertTokenizer
 import torch
 import torch.nn as nn
 import pytest
@@ -10,41 +9,33 @@ import numpy as np
 
 sys.path.insert(0, "src")
 
-# @pytest.mark.parametrize(
-#     "ids, mask", [([[101, 1188, 1110, 102, 0, 0, 0]], [[1, 1, 1, 1, 0, 0, 0]])]
-# )
-
-# ids = [101, 1188, 1110, 102, 0, 0, 0]
-# mask = [1, 1, 1, 1, 0, 0, 0]
-
 def test_forward():
-    n_labels = 7
-    batch = 1
-    expected_shape = (batch, n_labels)
 
-    ids = [101, 1188, 1110, 102, 0, 0, 0]
-    mask = [1, 1, 1, 1, 0, 0, 0]
+    tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+    comments = 'Bye! Don\'t look, come or think of comming back! Tosser.'
+    # comments["comment_text"] = comments["comment_text"].map(
+    #             lambda x: tokenizer(x, padding="max_length", truncation=True, return_tensors="pt")
+    #         )
+    tk = tokenizer(comments, padding="max_length", truncation=True, return_tensors="pt")
+    print(tk)
+    input_ids = tk['input_ids']
+    attention_masks = tk['attention_mask']
 
-    # id_list = np.random.randint(0,2500,768)
-    # mask_list = np.random.randint(0,2,768)
+    len_id = len(input_ids[0])
+    labels = 7
+    expected_shape = (len_id,labels)
+    print(1)
+    print(expected_shape)
+    print(3)
     
-    ids = torch.tensor(ids, dtype=torch.long)
-    mask = torch.tensor(mask, dtype=torch.long)
-    # ids = ids.reshape(-1,1)
-    # model = train_model.ModelTrainer(Distil_bert,0.01,5)
-    # configuration = DistilBertConfig()
-    # model = Distil_bert.classifier(ids)
-    # model = nn.DataParallel(model)
+    ids = torch.tensor(input_ids, dtype=torch.long)
+    mask = torch.tensor(attention_masks, dtype=torch.long)
+    
     model = torch.load("models/model_epoch2.pth")
-    # distil = DistilBertForSequenceClassification.from_pretrained(model_weights)
-    # model = distil()
-    model.eval()
-    # print(model.shape)
-    output = model(ids)
-    # model.load_state_dict(torch.load("models/model_epoch2.pth",mask))
-    # model = model_epoch2
-
-    # actual = model.classifier()
     
-
+    model.eval()
+   
+    output = model(input_ids = ids.reshape(-1,1),attention_mask=mask)
+    
+    print(output.logits.shape)
     assert expected_shape == output.logits.shape, "Different shape"

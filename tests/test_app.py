@@ -25,3 +25,11 @@
 #     )
 #     assert response.status_code == 200
 #     assert response.json["response"]["tags"] == "['108', '1265', '1494', '474', '692']"
+# from transformers import DistilBertTokenizer
+# tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+# comments = 'Bye! Don\'t look, come or think of comming back! Tosser.'
+# # comments["comment_text"] = comments["comment_text"].map(
+# #             lambda x: tokenizer(x, padding="max_length", truncation=True, return_tensors="pt")
+# #         )
+# tk = tokenizer(comments, padding="max_length", truncation=True, return_tensors="pt")
+# print(tk)
