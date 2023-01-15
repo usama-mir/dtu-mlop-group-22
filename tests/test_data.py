@@ -8,8 +8,8 @@ from dataset import Toxic_Dataset
 def test_data():
 
     n_rows = 31513
-    dataset = pd.read_csv("./data/processed/train_processed.csv",nrows=100)
-    #assert len(dataset) == n_rows
+    dataset = pd.read_csv("./data/processed/train_processed.csv")
+    assert len(dataset) == n_rows
 
     attributes = ['id', 'comment_text', 'toxic', 'severe_toxic', 'obscene', 'threat',
        'insult', 'identity_hate', 'total_classes', 'non_toxic']
@@ -17,13 +17,12 @@ def test_data():
 
     Train_data = Toxic_Dataset(pd.DataFrame(dataset[['comment_text']]), pd.DataFrame(dataset[['toxic', 'severe_toxic', 'obscene', 'threat',
        'insult', 'identity_hate', 'total_classes', 'non_toxic']]))
-
-
-    comment, label = Train_data.__getitem__(10)
-    comment = torch.tensor(comment, dtype=torch.long)
+    comment, label = Train_data.__getitem__(15)
+    comment = torch.tensor(comment['input_ids'], dtype=torch.long)
     label = torch.tensor(label, dtype=torch.long)
-    print(type(comment.size()))
-    print(type(label.size()))
+    assert comment.size() == torch.Size([1, 512])
+    assert label.size() == torch.Size([8])
+
 
 if __name__ == '__main__':
     test_data()
