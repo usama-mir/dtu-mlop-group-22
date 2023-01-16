@@ -11,5 +11,4 @@ COPY ../../data data/
 
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
-ENV PYTHONPATH=":/src"
 ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
