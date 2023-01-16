@@ -12,9 +12,9 @@ import numpy as np
 @click.argument("input_filepath", type=click.Path(exists=True))
 @click.argument("output_filepath", type=click.Path())
 def main(
-    input_filepath="../data/raw/train.csv.zip",
-    output_filepath="../data/processed/train_processed.csv",
-):
+    input_filepath: str = "../data/raw/train.csv.zip",
+    output_filepath: str = "../data/processed/train_processed.csv",
+) -> None:
     """Runs data processing scripts to turn raw data from (../raw) into
     cleaned data ready to be analyzed (saved in ../processed).
     """
@@ -22,7 +22,9 @@ def main(
     data = pd.read_csv(input_filepath, compression="zip")
     # labels = ['toxic', 'severe_toxic', 'obscene', 'threat','insult', 'identity_hate']
     data["total_classes"] = data.iloc[:, 2:8].apply(lambda x: sum(x), axis=1)
-    data["non_toxic"] = data.iloc[:, 2:8].apply(lambda x: 1 if (sum(x) == 0) else 0, axis=1)
+    data["non_toxic"] = data.iloc[:, 2:8].apply(
+        lambda x: 1 if (sum(x) == 0) else 0, axis=1
+    )
     cleaned_data = data.copy()
 
     # Removing Hyperlinks from text
@@ -69,7 +71,9 @@ def main(
     cleaned_data["comment_text"] = cleaned_data["comment_text"].map(
         lambda x: re.sub(r"^\"", "", x)
     )  # removing quotation from start and the end of the string
-    cleaned_data["comment_text"] = cleaned_data["comment_text"].map(lambda x: re.sub(r"\"$", "", x))
+    cleaned_data["comment_text"] = cleaned_data["comment_text"].map(
+        lambda x: re.sub(r"\"$", "", x)
+    )
 
     # Removing Punctuation / Special characters (;:'".?@!%&*+) which appears more than twice in the text
     cleaned_data["comment_text"] = cleaned_data["comment_text"].map(
