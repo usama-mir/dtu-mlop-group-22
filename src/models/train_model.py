@@ -11,12 +11,11 @@ from model import Distil_bert
 import pandas as pd
 from dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
-import numpy as np
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 
 
 class ModelTrainer:
-    def __init__(self, model: Distil_bert, learning_rate: float, epochs: int):
+    def __init__(self, model: Distil_bert, learning_rate: float, epochs: int) -> None:
         """
         Initialize the model trainer
 
@@ -31,8 +30,13 @@ class ModelTrainer:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.epochs = 2  # epochs
 
-    def train(self, Train_DL, Val_DL):
+    def train(self, Train_DL: DataLoader, Val_DL: DataLoader) -> None:
+        """
+        Train the model on the input data
 
+        :param Train_DL: DataLoader for the training dataset
+        :param Val_DL: DataLoader for the validation dataset
+        """
         self.model.to(self.device)
         self.model.train()
 
@@ -57,7 +61,6 @@ class ModelTrainer:
                 input_ids = (
                     comments["input_ids"].squeeze(1).to(self.device)
                 )  # contains the tokenized and indexed representation for a batch of comments
-                print("input_ids SHAPE {}".format(input_ids.shape))
                 output = self.model(input_ids, masks)  # vector of logits for each class
                 loss = self.Loss(output.logits, labels)  # compute the loss
 
@@ -69,7 +72,7 @@ class ModelTrainer:
                 print(f" Train Loss:{loss/len(Train_DL):.4f}")
 
                 with torch.no_grad():
-                    # Testing model on validation Data
+                    # Testing model on validation
                     accVal = []
                     val_loss = 0
                     for comments, labels in Val_DL:
@@ -100,16 +103,23 @@ class ModelTrainer:
                 val_acc_epochs.append(validation_accuracy)
                 val_loss_epochs.append(validation_loss)
 
-        torch.save(self.model.state_dict(), "models/model_epoch{}.pth".format(self.epochs))
+        torch.save(
+            self.model.state_dict(), "models/model_epoch{}.pth".format(self.epochs)
+        )
 
         return train_acc_epochs, train_loss_epochs, val_acc_epochs, val_loss_epochs
 
-    def Evaluate_Model(self, Test_DL):
+    def evaluate_model(self, Test_Dl: DataLoader):
+        """
+        Evaluate the model on the test data
+
+        :param Train_DL: DataLoader for the evaluating dataset
+        """
         self.model.eval()
 
         accTest = []
         Test_loss = 0
-        for comments, labels in Test_DL:
+        for comments, labels in Test_Dl:
             labels = torch.from_numpy(labels).to(self.device)
             labels = labels.float()
             masks = comments["attention_mask"].squeeze(1).to(self.device)
@@ -128,12 +138,13 @@ class ModelTrainer:
             accTest.append(correct_val / 7)
 
         print("Testing Dataset:\n")
-        print(f" Test Loss:{Test_loss/len(Test_DL):.4f} | Test Accuracy:{sum(accTest)/len(accTest):.4f}")
+        print(
+            f" Test Loss:{Test_loss/len(Test_Dl):.4f} | Test Accuracy:{sum(accTest)/len(accTest):.4f}"
+        )
 
 
 if __name__ == "__main__":
     trainer = ModelTrainer(Distil_bert, 0.01, 10)
-
 
     # now run the data through the toxic dataset
     # then call the train function and hope for the best
