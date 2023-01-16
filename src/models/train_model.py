@@ -16,8 +16,14 @@ from torch.utils.data import DataLoader, Dataset
 
 
 class ModelTrainer:
-    def __init__(self, model, learning_rate, epochs):
+    def __init__(self, model: Distil_bert, learning_rate: float, epochs: int):
+        """
+        Initialize the model trainer
 
+        :param model: The model to be trained
+        :param learning_rate: The learning rate for the optimizer
+        :param epochs: The number of epochs for training
+        """
         self.model = model
         self.optimizer = Adam(params=model.parameters(), lr=learning_rate)
         self.Loss = BCELoss()
