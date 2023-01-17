@@ -1,7 +1,11 @@
 import sys
+import os
 
 sys.path.append("./src/data")
+sys.path.append("../../data")
 
+import hydra
+from hydra.utils import get_original_cwd
 from torch.optim import Adam
 from tqdm import tqdm
 from torch.nn import BCELoss
@@ -12,10 +16,11 @@ import pandas as pd
 from dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
+from typing import Dict
 
 
 class ModelTrainer:
-    def __init__(self, model: Distil_bert, learning_rate: float, epochs: int) -> None:
+    def __init__(self, cfg, model: Distil_bert) -> None:
         """
         Initialize the model trainer
 
@@ -24,11 +29,12 @@ class ModelTrainer:
         :param epochs: The number of epochs for training
         """
         self.model = model
-        self.optimizer = Adam(params=model.parameters(), lr=learning_rate)
+        self.optimizer = Adam(params=model.parameters(), lr=cfg.hyperparameters.lr)
         self.Loss = BCELoss()
-        self.scheduler = StepLR(self.optimizer, step_size=212, gamma=0.1)
+        self.scheduler = StepLR(self.optimizer, step_size=cfg.hyperparameters.step_size, gamma=cfg.hyperparameters.gamma)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.epochs = 2  # epochs
+        self.epochs = cfg.hyperparameters.epochs  
+        self.n_classes = cfg.hyperparameters.n_classes
 
     def train(self, Train_DL: DataLoader, Val_DL: DataLoader) -> None:
         """
@@ -86,11 +92,11 @@ class ModelTrainer:
 
                         op = output.logits
                         correct_val = 0
-                        for i in range(7):
+                        for i in range(self.n_classes):
                             res = 1 if op[0, i] > 0.5 else 0
                             if res == labels[0, i]:
                                 correct_val += 1
-                        accVal.append(correct_val / 7)
+                        accVal.append(correct_val / self.n_classes)
 
                     validation_loss[batch] = val_loss / len(Val_DL)
                     validation_accuracy[batch] = sum(accVal) / len(accVal)
@@ -131,11 +137,11 @@ class ModelTrainer:
 
             op = output.logits
             correct_val = 0
-            for i in range(7):
+            for i in range(self.n_classes):
                 res = 1 if op[0, i] > 0.5 else 0
                 if res == labels[0, i]:
                     correct_val += 1
-            accTest.append(correct_val / 7)
+            accTest.append(correct_val / self.n_classes)
 
         print("Testing Dataset:\n")
         print(
@@ -143,12 +149,13 @@ class ModelTrainer:
         )
 
 
-if __name__ == "__main__":
-    trainer = ModelTrainer(Distil_bert, 0.01, 10)
-
+@hydra.main(config_name="config.yaml")
+def main(cfg:Dict) -> None:
+    trainer = ModelTrainer(cfg, Distil_bert)
     # now run the data through the toxic dataset
     # then call the train function and hope for the best
-    data = pd.read_csv("./data/processed/train_processed.csv", nrows=1000)
+    original_cwd = get_original_cwd()
+    data = pd.read_csv(os.path.join(original_cwd, "data/processed/train_processed.csv"), nrows=1000)
 
     X_train, X_val, Y_train, Y_val = train_test_split(
         pd.DataFrame(data.iloc[:, 1]),
@@ -170,8 +177,13 @@ if __name__ == "__main__":
     Val_data = Toxic_Dataset(X_val, Y_val)
 
     Train_DL = Toxic_Dataset(X_train, Y_train)
-    Train_Loader = DataLoader(Train_DL, batch_size=32, shuffle=True)
+    Train_Loader = DataLoader(Train_DL, batch_size=cfg.hyperparameters.batch_size, shuffle=True)
     Val_DL = Toxic_Dataset(X_val, Y_val)
-    Val_Loader = DataLoader(Val_DL, batch_size=32, shuffle=True)
+    Val_Loader = DataLoader(Val_DL, batch_size=cfg.hyperparameters.batch_size, shuffle=True)
 
     trainer.train(Train_Loader, Val_Loader)
+
+
+if __name__ == "__main__":
+    #hydra.run(config_name="config.yaml", main=main)
+    main()
