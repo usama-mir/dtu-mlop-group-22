@@ -19,6 +19,14 @@ import torch.nn as nn
 class ModelTrainer(nn.Module):
     def __init__(self, model, learning_rate, epochs):
         super(ModelTrainer, self).__init__()
+        """
+        Initialize the model trainer
+
+        :param model: The model to be trained
+        :param learning_rate: The learning rate for the optimizer
+        :param epochs: The number of epochs for training
+        """
+        
         self.model = model
         self.optimizer = Adam(params=model.parameters(), lr=learning_rate)
         self.Loss = BCELoss()
@@ -26,8 +34,13 @@ class ModelTrainer(nn.Module):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.epochs = 2  # epochs
 
-    def train(self, Train_DL, Val_DL):
+    def train(self, Train_DL: DataLoader, Val_DL: DataLoader) -> None:
+        """
+        Train the model on the input data
 
+        :param Train_DL: DataLoader for the training dataset
+        :param Val_DL: DataLoader for the validation dataset
+        """
         self.model.to(self.device)
         self.model.train()
 
@@ -52,7 +65,6 @@ class ModelTrainer(nn.Module):
                 input_ids = (
                     comments["input_ids"].squeeze(1).to(self.device)
                 )  # contains the tokenized and indexed representation for a batch of comments
-                print("input_ids SHAPE {}".format(input_ids.shape))
                 output = self.model(input_ids, masks)  # vector of logits for each class
                 loss = self.Loss(output.logits, labels)  # compute the loss
 
@@ -64,7 +76,7 @@ class ModelTrainer(nn.Module):
                 print(f" Train Loss:{loss/len(Train_DL):.4f}")
 
                 with torch.no_grad():
-                    # Testing model on validation Data
+                    # Testing model on validation
                     accVal = []
                     val_loss = 0
                     for comments, labels in Val_DL:
@@ -95,16 +107,22 @@ class ModelTrainer(nn.Module):
                 val_acc_epochs.append(validation_accuracy)
                 val_loss_epochs.append(validation_loss)
 
+
         torch.save(self.model, "models/model_epoch{}.pth".format(self.epochs))
 
         return train_acc_epochs, train_loss_epochs, val_acc_epochs, val_loss_epochs
 
-    def Evaluate_Model(self, Test_DL):
+    def evaluate_model(self, Test_Dl: DataLoader):
+        """
+        Evaluate the model on the test data
+
+        :param Train_DL: DataLoader for the evaluating dataset
+        """
         self.model.eval()
 
         accTest = []
         Test_loss = 0
-        for comments, labels in Test_DL:
+        for comments, labels in Test_Dl:
             labels = torch.from_numpy(labels).to(self.device)
             labels = labels.float()
             masks = comments["attention_mask"].squeeze(1).to(self.device)
@@ -123,20 +141,17 @@ class ModelTrainer(nn.Module):
             accTest.append(correct_val / 7)
 
         print("Testing Dataset:\n")
-        print(f" Test Loss:{Test_loss/len(Test_DL):.4f} | Test Accuracy:{sum(accTest)/len(accTest):.4f}")
+        print(
+            f" Test Loss:{Test_loss/len(Test_Dl):.4f} | Test Accuracy:{sum(accTest)/len(accTest):.4f}"
+        )
 
 
 if __name__ == "__main__":
     trainer = ModelTrainer(Distil_bert, 0.01, 10)
-    import os
-
-    # print(os.getcwd())
 
     # now run the data through the toxic dataset
     # then call the train function and hope for the best
-    data = pd.read_csv("./data/processed/train_processed.csv", nrows=100)
-    # print(data.head(10))
-    # print(data.head(20))
+    data = pd.read_csv("./data/processed/train_processed.csv", nrows=1000)
 
     X_train, X_val, Y_train, Y_val = train_test_split(
         pd.DataFrame(data.iloc[:, 1]),
@@ -146,26 +161,20 @@ if __name__ == "__main__":
     )
     Y_train.drop(columns=["total_classes"], inplace=True)
     Y_val.drop(columns=["total_classes"], inplace=True)
-    # print(Y_train.columns)
-    # print(Y_val.columns)
-    # print()
+
     X_train = pd.DataFrame(X_train).reset_index(drop=True)
     X_val = pd.DataFrame(X_val).reset_index(drop=True)
     Y_train = pd.DataFrame(Y_train).reset_index(drop=True)
     Y_val = pd.DataFrame(Y_val).reset_index(drop=True)
-    X_train.to_csv("X_train.csv")
 
     # drop total classes
     # Making Training, Testing and Validation of data using Dataset class
     Train_data = Toxic_Dataset(X_train, Y_train)
-    # Test_data = Toxic_Dataset(X_test, Y_test)
     Val_data = Toxic_Dataset(X_val, Y_val)
 
     Train_DL = Toxic_Dataset(X_train, Y_train)
     Train_Loader = DataLoader(Train_DL, batch_size=32, shuffle=True)
     Val_DL = Toxic_Dataset(X_val, Y_val)
     Val_Loader = DataLoader(Val_DL, batch_size=32, shuffle=True)
-    # print(X_train)
-    # print(X_train.to_frame().columns)
 
     trainer.train(Train_Loader, Val_Loader)
