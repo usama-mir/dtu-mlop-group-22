@@ -1,5 +1,0 @@
-steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/dtu-mlop-group-22/testing', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/dtu-mlop-group-22/testing']
