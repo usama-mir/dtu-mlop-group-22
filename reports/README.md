@@ -58,7 +58,7 @@ end of the project.
 * [x] Add a model file and a training script and get that running (M)
 * [x] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using (N)
 * [x] Remember to comply with good coding practices (`pep8`) while doing the project (Pol)
-* [ ] Do a bit of code typing and remember to document essential parts of your code (Pol)
+* [x] Do a bit of code typing and remember to document essential parts of your code (Pol)
 * [x] Setup version control for your data or part of your data
 * [ ] Construct one or multiple docker files for your code (U, N)
 * [ ] Build the docker files locally and make sure they work as intended (U, N)
