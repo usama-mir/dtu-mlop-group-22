@@ -7,15 +7,18 @@ from tqdm import tqdm
 from torch.nn import BCELoss
 from torch.optim.lr_scheduler import StepLR
 import torch
-from model import Distil_bert
+from src.models.model import Distil_bert
 import pandas as pd
-from dataset import Toxic_Dataset
+from src.data.dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader
+import numpy as np
+from torch.utils.data import DataLoader, Dataset
+import torch.nn as nn
 
 
-class ModelTrainer:
-    def __init__(self, model: Distil_bert, learning_rate: float, epochs: int) -> None:
+class ModelTrainer(nn.Module):
+    def __init__(self, model, learning_rate, epochs):
+        super(ModelTrainer, self).__init__()
         """
         Initialize the model trainer
 
@@ -23,6 +26,7 @@ class ModelTrainer:
         :param learning_rate: The learning rate for the optimizer
         :param epochs: The number of epochs for training
         """
+        
         self.model = model
         self.optimizer = Adam(params=model.parameters(), lr=learning_rate)
         self.Loss = BCELoss()
@@ -103,9 +107,8 @@ class ModelTrainer:
                 val_acc_epochs.append(validation_accuracy)
                 val_loss_epochs.append(validation_loss)
 
-        torch.save(
-            self.model.state_dict(), "models/model_epoch{}.pth".format(self.epochs)
-        )
+
+        torch.save(self.model, "models/model_epoch{}.pth".format(self.epochs))
 
         return train_acc_epochs, train_loss_epochs, val_acc_epochs, val_loss_epochs
 
