@@ -1,5 +1,6 @@
 import sys
 import os
+import wandb
 
 sys.path.append("./src/data")
 sys.path.append("../../data")
@@ -76,6 +77,7 @@ class ModelTrainer:
                 self.scheduler.step()
 
                 print(f" Train Loss:{loss/len(Train_DL):.4f}")
+                wandb.log({"Training loss": loss/len(Train_DL)})
 
                 with torch.no_grad():
                     # Testing model on validation
@@ -103,6 +105,7 @@ class ModelTrainer:
                     print(
                         f" Validation Loss:{val_loss/len(Val_DL):.4f} | Validation Accuracy:{sum(accVal)/len(accVal):.4f}"
                     )
+                    wandb.log({"Validation loss": loss/len(Train_DL)})
 
                 train_acc_epochs.append(training_accuracy)
                 train_loss_epochs.append(training_loss)
@@ -151,6 +154,9 @@ class ModelTrainer:
 
 @hydra.main(config_name="config.yaml")
 def main(cfg:Dict) -> None:
+    wandb.init(project="test-project", entity="dtu_mloperations")
+    wandb.config = cfg
+
     trainer = ModelTrainer(cfg, Distil_bert)
     # now run the data through the toxic dataset
     # then call the train function and hope for the best
