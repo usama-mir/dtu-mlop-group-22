@@ -191,5 +191,4 @@ def main(cfg:Dict) -> None:
 
 
 if __name__ == "__main__":
-    #hydra.run(config_name="config.yaml", main=main)
     main()
