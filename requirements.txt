@@ -19,4 +19,3 @@ dvc-render==0.0.15
 dvc-studio-client==0.3.0
 dvc-task==0.1.8
 dvclive==1.3.2
-dvc-gs==2.21.0
