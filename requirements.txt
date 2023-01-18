@@ -10,3 +10,4 @@ torch==1.13.0
 tqdm==4.64.1
 transformers==4.25.1
 hydra-core
+dvc==2.38.1
