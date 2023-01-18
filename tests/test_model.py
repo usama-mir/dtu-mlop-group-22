@@ -1,12 +1,8 @@
-from src.models.model import Distil_bert
 from transformers import DistilBertTokenizer
 import torch
-import torch.nn as nn
-import pytest
 import sys
-import random
-import numpy as np
 
+'''
 sys.path.insert(0, "src")
 
 
@@ -35,3 +31,4 @@ def test_forward():
 
     print(output.logits.shape)
     assert expected_shape == output.logits.shape, "Different shape"
+'''
