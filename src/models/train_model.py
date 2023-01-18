@@ -1,18 +1,16 @@
 import sys
 
-sys.path.append("./src/data")
-
+sys.path.append("./src")
 from torch.optim import Adam
 from tqdm import tqdm
 from torch.nn import BCELoss
 from torch.optim.lr_scheduler import StepLR
 import torch
-from src.models.model import Distil_bert
+from models.model import Distil_bert
 import pandas as pd
-from src.data.dataset import Toxic_Dataset
+from data.dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
-import numpy as np
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 import torch.nn as nn
 
 
@@ -31,7 +29,8 @@ class ModelTrainer(nn.Module):
         self.optimizer = Adam(params=model.parameters(), lr=learning_rate)
         self.Loss = BCELoss()
         self.scheduler = StepLR(self.optimizer, step_size=212, gamma=0.1)
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        #self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = "cpu"
         self.epochs = 2  # epochs
 
     def train(self, Train_DL: DataLoader, Val_DL: DataLoader) -> None:
@@ -65,13 +64,22 @@ class ModelTrainer(nn.Module):
                 input_ids = (
                     comments["input_ids"].squeeze(1).to(self.device)
                 )  # contains the tokenized and indexed representation for a batch of comments
+
+                print('Masks: ', masks)
                 output = self.model(input_ids, masks)  # vector of logits for each class
+                print('Output: ', output)
                 loss = self.Loss(output.logits, labels)  # compute the loss
 
+                print('Labels: ', labels)
                 self.optimizer.zero_grad()
+                print('Made it to AFTER optimizer')
                 loss.backward()
+                print('Wuhuu did the backward!')
                 self.optimizer.step()
+                print('Took a opt step')
                 self.scheduler.step()
+                print('Took a scheduler step!')
+
 
                 print(f" Train Loss:{loss/len(Train_DL):.4f}")
 
