@@ -3,7 +3,6 @@ import os
 import wandb
 
 sys.path.append("./src/data")
-sys.path.append("../../data")
 
 import hydra
 from hydra.utils import get_original_cwd
@@ -12,9 +11,9 @@ from tqdm import tqdm
 from torch.nn import BCELoss
 from torch.optim.lr_scheduler import StepLR
 import torch
-from src.models.model import Distil_bert
+from model import Distil_bert
 import pandas as pd
-from src.data.dataset import Toxic_Dataset
+from dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
 import numpy as np
 from torch.utils.data import DataLoader, Dataset
@@ -23,7 +22,7 @@ from typing import Dict
 
 
 class ModelTrainer(nn.Module):
-    def __init__(self, model, learning_rate, epochs):
+    def __init__(self, cfg:Dict, model:Distil_bert) -> None:
         super(ModelTrainer, self).__init__()
         """
         Initialize the model trainer
