@@ -15,8 +15,7 @@ from model import Distil_bert
 import pandas as pd
 from dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
-import numpy as np
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 import torch.nn as nn
 from typing import Dict
 
