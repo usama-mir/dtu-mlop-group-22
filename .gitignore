@@ -3,3 +3,9 @@ src/models/__pycache__/model.cpython-310.pyc
 src/models/__pycache__/__init__.cpython-310.pyc
 src/data/__pycache__/dataset.cpython-310.pyc
 src/data/__pycache__/__init__.cpython-310.pyc
+__pycache__
+.DS_Store
+.idea/
+clear_dockerimages.sh
+data/.DS_Store
+models/model_epoch2.pth
