@@ -244,7 +244,7 @@ number of unit tests cannot that the code is 100% free from bugs.
 >
 > Answer:
 
-We used branching-strategy which means that every feature was created on separated braches and later merged into the main branch. It wasn't allowed to push directly to main after the first week. We put a branch protection rule on main, which ensure no accidents. Besides that we used github actions to make sure new code passed the unit-tests before pushing.
+We had a lot of branches for our project. We started by defining a branch naming convention to be “feature/feature-name” so we were consistent with how the naming were done. We branched out on every bigger feature to be made - for instance for the implementation of tests. PRs were used for the main branch. The way to effectively circumvent issues with conflicts were to pull new changes on the local main branch first. Merge the changes to the feature branch the person was working on and afterwards push the changes and create a pull request. That way we never had to resolve conflicts directly with the main branch. 
 
 ### Question 10
 
@@ -259,7 +259,7 @@ We used branching-strategy which means that every feature was created on separat
 >
 > Answer:
 
-We used DVC for data storage of the raw data, this was mainly a choice as it isn't nice to have the datafiles stored on GitHub. Also, since we're working with text-data and there's a million different ways to clean up the data, it's super easy to add some extra cleaning steps in the make_dataset.py file. 
+We started by using DVC and initially it worked really well and made it easier to push and pull our data as that were stored elsewhere. Along the way we ended up with quite a lot of issues since there were issues with the versions and this ultimately meant we weren’t able to use the features that much more since dvc crashed everytime. We ended moving everything to the git bucket instead to be used there without dvc.
 
 ### Question 11
 
@@ -275,7 +275,7 @@ We used DVC for data storage of the raw data, this was mainly a choice as it isn
 >
 > Answer:
 
---- question 11 fill here ---
+We have set up GitHub actions to do CI. We only tested the code on a ubuntu machine since we are going to run our code on linux machines only. The CI was set to be triggered on PRs and pushes to the main branch and mainly it took care of the unittesting of our code. It proved to be quite a hassle as we were having many issues with DVC and afterwards had to change to google cloud bucket. Although it looked easy to just change the code we ended moving our data manually to google cloud bucket. Then we had to create a google service account to be able to pull the data. For this to work we created a small bashscript that takes the authentication file from secrets and uses It to establish a connection to the google cloud and from there we can pull our data into our CI to do the tests.
 
 ## Running code and tracking experiments
 
