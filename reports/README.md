@@ -130,7 +130,7 @@ s184424, s134187, s222433, s183190, s221623
 >
 > Answer:
 
-cookie-clutter, github, dvc, docker, hydra, wardb, pytest, gcp-bucket, google cloud, fastAPI
+We used cookie-clutter for code structure. GitHub for version control. DVC for storing the raw data. Docker for virtual environment. Hydra for hyperparameter tuning. Wardb to visualize and log the training of the different models. Pytest for unittesting. Google Cloud for VMs and buckets. FastAPI for interacting with our model.
 
 ## Coding environment
 
@@ -294,7 +294,12 @@ We used DVC for data storage of the raw data, this was mainly a choice as it isn
 >
 > Answer:
 
---- question 12 fill here ---
+We used hydra to configure the hyperparameters from a config.yaml file, that has the following format:
+hyperparameters: batch_size: 64 lr: 0.01 epochs: 10 step_size: 212 gamma: 0.1 n_classes: 7
+The file was then imported using a decorator in the main function from train_model.py in the following way:
+@hydra.main(config_name=“config.yaml”) def main(cfg:Dict) -> None:
+The values of the hyperparameters are then defined as:
+lr=cfg.hyperparameters.lr 
 
 ### Question 13
 
