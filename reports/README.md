@@ -78,7 +78,7 @@ end of the project.
 * [x] Get some continuous integration running on the github repository (U,N)
 * [x] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup (N)
 * [x] Create a trigger workflow for automatically building your docker images (U,N)
-* [x] Get your model training in GCP using either the Engine or Vertex AI 
+* [x] Get your model training in GCP using either the Engine or Vertex AI
 * [x] Create a FastAPI application that can do inference using your model
 * [ ] If applicable, consider deploying the model locally using torchserve
 * [x] Deploy your model in GCP using either Functions or Run as the backend
@@ -86,10 +86,10 @@ end of the project.
 ### Week 3
 
 * [ ] Check how robust your model is towards data drifting
-* [ ] Setup monitoring for the system telemetry of your deployed model 
+* [ ] Setup monitoring for the system telemetry of your deployed model
 * [ ] Setup monitoring for the performance of your deployed model
 * [x] If applicable, play around with distributed data loading
-* [x] If applicable, play around with distributed model training 
+* [x] If applicable, play around with distributed model training
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
 ### Additional
@@ -101,6 +101,7 @@ end of the project.
 ## Group information
 
 ### Question 1
+>
 > **Enter the group number you signed up on <learn.inside.dtu.dk>**
 >
 > Answer:
@@ -108,6 +109,7 @@ end of the project.
 Group 22
 
 ### Question 2
+>
 > **Enter the study number for each member in the group**
 >
 > Example:
@@ -119,6 +121,7 @@ Group 22
 s184424, s134187, s222433, s183190, s221623
 
 ### Question 3
+>
 > **What framework did you choose to work with and did it help you complete the project?**
 >
 > Answer length: 100-200 words.
@@ -243,7 +246,7 @@ number of unit tests cannot that the code is 100% free from bugs.
 >
 > Answer:
 
-We had a lot of branches for our project. We started by defining a branch naming convention to be “feature/feature-name” so we were consistent with how the naming were done. We branched out on every bigger feature to be made - for instance for the implementation of tests. PRs were used for the main branch. The way to effectively circumvent issues with conflicts were to pull new changes on the local main branch first. Merge the changes to the feature branch the person was working on and afterwards push the changes and create a pull request. That way we never had to resolve conflicts directly with the main branch. 
+We had a lot of branches for our project. We started by defining a branch naming convention to be “feature/feature-name” so we were consistent with how the naming were done. We branched out on every bigger feature to be made - for instance for the implementation of tests. PRs were used for the main branch. The way to effectively circumvent issues with conflicts were to pull new changes on the local main branch first. Merge the changes to the feature branch the person was working on and afterwards push the changes and create a pull request. That way we never had to resolve conflicts directly with the main branch.
 
 ### Question 10
 
@@ -298,7 +301,7 @@ hyperparameters: batch_size: 64 lr: 0.01 epochs: 10 step_size: 212 gamma: 0.1 n_
 The file was then imported using a decorator in the main function from train_model.py in the following way:
 @hydra.main(config_name=“config.yaml”) def main(cfg:Dict) -> None:
 The values of the hyperparameters are then defined as:
-lr=cfg.hyperparameters.lr 
+lr=cfg.hyperparameters.lr
 
 ### Question 13
 
@@ -334,9 +337,7 @@ To assess the training of the model we have used wandb. This tool helps keep tra
 wandb.log({“Training loss”: loss/len(Train_DL)})
 The loss is then logged after each batch for every epoch. In the case of the validation loss, we use a separate dataset, that helps us evaluate the capability of the model to infer on new data, and see if the training is biased towards the training dataset
 
-
 ![train_model](figures/training_model.png)
-
 
 ### Question 15
 
@@ -352,7 +353,6 @@ The loss is then logged after each batch for every epoch. In the case of the val
 > Answer:
 
 Docker were used to both train and deploy the trained model with a small backed application. The docker containers were initially taught to be easily deployable but we had many issues with the training dying all the time. We found out that the model we were using needed 12 gb of memory to be able to run. Afterwards we have used two images. We initially wanted to use a combination of makefiles and docker-compose to run our different images but we didn’t get to that due to time constraints.
-
 
 ### Question 16
 
@@ -415,13 +415,9 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
-
 ![bucket_1](figures/bucket_1.png)
 
-
-
 ![bucket_2](figures/bucket_2.png)
-
 
 ### Question 20
 
@@ -430,9 +426,7 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
-
 ![container_reg](figures/container_reg.png)
-
 
 ### Question 21
 
@@ -441,9 +435,7 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
-
 ![cloud_hist](figures/build_history.png)
-
 
 ### Question 22
 
