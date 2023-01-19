@@ -488,7 +488,7 @@ We did not end up implementing any monitoring of our model although we did start
 >
 > Answer:
 
---- question 24 fill here ---
+Mihaela - All. Naja - 5 credits. Usama - None. Pol - All. Hyunho - 399dkk. The most expensive were using the Compute Engine
 
 ## Overall discussion of project
 
