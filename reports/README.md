@@ -474,7 +474,7 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
---- question 23 fill here ---
+We did not end up implementing any monitoring of our model although we did start by implementing data drifting measures in the form of evidently. This is helpful in ensuring that whatever model is being used is retrained whenever it starts to decay. This means that the model is retrained when apparent new trends in the data appear that the current model is not taking into account. It could also have been nice to have implemented some alert systems to look at when the system is behaving unexpected to be able to fix that before the model starts making weird predictions or something like that.
 
 ### Question 24
 
