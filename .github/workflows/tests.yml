@@ -30,7 +30,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        credentials_json: '${{ secrets.GOOGLE_SERVICE_ACCOUNT }}'
+        credentials_json: '${{ secrets.GCLOUD_SERVICE_ACCOUNT }}'
         
     - name: Test with pytest
       run: |
