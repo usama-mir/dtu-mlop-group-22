@@ -18,6 +18,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 import torch.nn as nn
 from typing import Dict
+import time
 
 
 class ModelTrainer(nn.Module):
@@ -155,6 +156,7 @@ class ModelTrainer(nn.Module):
 
 @hydra.main(config_name="config.yaml")
 def main(cfg:Dict) -> None:
+    start_time = time.time()
     wandb.init(project="test-project", entity="dtu_mloperations")
     wandb.config = cfg
 
@@ -184,11 +186,14 @@ def main(cfg:Dict) -> None:
     Val_data = Toxic_Dataset(X_val, Y_val)
 
     Train_DL = Toxic_Dataset(X_train, Y_train)
-    Train_Loader = DataLoader(Train_DL, batch_size=cfg.hyperparameters.batch_size, shuffle=True)
+    Train_Loader = DataLoader(Train_DL, batch_size=cfg.hyperparameters.batch_size, shuffle=True, num_workers=cfg.hyperparameters.n_workers)
     Val_DL = Toxic_Dataset(X_val, Y_val)
     Val_Loader = DataLoader(Val_DL, batch_size=cfg.hyperparameters.batch_size, shuffle=True)
 
     trainer.train(Train_Loader, Val_Loader)
+    total_time = time.time() - start_time
+    total_time_str = str(datetime.timedelta(seconds=int(total_time)))
+    print('Training time {}'.format(total_time_str))
 
 
 if __name__ == "__main__":
