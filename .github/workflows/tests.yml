@@ -34,6 +34,10 @@ jobs:
         
     - name: Test with pytest
       run: |
+        touch test
+        echo '${{ secrets.GDRIVE_CREDENTIALS_DATA }}' > test
+        gcloud auth activate-service-account --key-file ./test
+        gsutil cp gs://group-22-bucket/ ./data/raw
         gcloud auth activate-service-account --key-file '${{ secrets.GCLOUD_SERVICE_ACCOUNT }}'
         gsutil cp gs://group-22-bucket/jigsaw-toxic-comment-classification-challenge/* ./data/raw/
         pip install pytest coverage
