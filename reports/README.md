@@ -449,7 +449,9 @@ We also had the other instance using CPU, but there was a problem with training 
 > *worked. Afterwards we deployed it in the cloud, using ... . To invoke the service an user would call*
 > *`curl -X POST -F "file=@file.json"<weburl>`*
 >
-> Answer:
+> Answer: Basically, model deployment was not successful. First time, there was an memory exceed problem.
+Therefore we increased the memory for dealing with that, but there was a problem with module, pytorch.
+In requirements.txt file, torch was included, but it could not solve the problem.
 
 --- question 22 fill here ---
 
