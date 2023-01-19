@@ -415,7 +415,8 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
---- question 19 fill here ---
+<img width="1459" alt="image" src="https://user-images.githubusercontent.com/97845216/213545366-2e93a463-8eba-4e22-86ee-29581bacea6f.png">
+
 
 ### Question 20
 
