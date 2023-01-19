@@ -164,7 +164,14 @@ We created a requirements.txt file using pipreqs, which means that only the depe
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+We expect that you initialized your project using the cookiecutter template.
+Explain the overall structure of your code. Did you fill out every folder or only a subset?
+Answer: Only a subset of the folders have been filled. The project folder consists of a data folder where
+the raw and the processed csv files are located. The src folder consists multiple folders:
+the data folder contains the dataset.py file in which the pytorch dataset file is defined and a make_dataset.py
+file that is processing the raw data into the final form.
+The models folder contains the train_model.py that is responsible for the training of the model.
+Fianlly the tests folder contains files that test the model and the data used to train the model.
 
 ### Question 6
 
@@ -175,7 +182,11 @@ We created a requirements.txt file using pipreqs, which means that only the depe
 >
 > Answer:
 
---- question 6 fill here ---
+Flake8 was used to understand which code
+was not following the code standards. The code not following the standards was then formatted using
+black. Consitency is very important in software development.
+Formatted code is easier to read and follow and reduces the risk of mistakes and allows for
+better collaboration on software development.
 
 ## Version control
 
@@ -194,7 +205,12 @@ We created a requirements.txt file using pipreqs, which means that only the depe
 >
 > Answer:
 
---- question 7 fill here ---
+We have implemented tests that test that the data is loaded correctly, mainly the size of
+the dataset used for training the model, the format of the data and that the data is loaded
+correctly into the pytorch dataset class. Furthermore once the data was loaded a random datapoint
+from the dataset was sampled and checked that it has the right shape.
+A few other tests were implemented to check the the model behaves as expected. A model was asked to make
+a prediction on a random data point and it was checked that the shape of the output matches with the expected shape.
 
 ### Question 8
 
@@ -209,7 +225,11 @@ We created a requirements.txt file using pipreqs, which means that only the depe
 >
 > Answer:
 
---- question 8 fill here ---
+The code coverage for the model and the data part of the project was over 95% but there are still other aspects
+left to be tested such as the training of the model, or testing the fastapi application. Even if we would have managed
+to create tests for these parts as well, it will still not be guaranteed that our code would be error free. As it is
+time consuming to write unit tests other types of metrics. Unit tests have also a very limited scope, and even having a high
+number of unit tests cannot that the code is 100% free from bugs.
 
 ### Question 9
 
@@ -306,7 +326,13 @@ We used DVC for data storage of the raw data, this was mainly a choice as it isn
 >
 > Answer:
 
---- question 14 fill here ---
+To assess the training of the model we have used wandb. This tool helps keep track of the different experiments, and the hyperparameters defined for each one. We have logged the training and validation losses, that correspond to the Binary Cross Entropy between the target and the input probabilities. The output of the model are the probabilities of a sentence of belonging to each of the seven different classes of toxicity. This loss helps the model understand how far is the output to the values that it should predict. Since the loss is computed over the whole batch, we log to wandb the average, defined as following:
+wandb.log({“Training loss”: loss/len(Train_DL)})
+The loss is then logged after each batch for every epoch. In the case of the validation loss, we use a separate dataset, that helps us evaluate the capability of the model to infer on new data, and see if the training is biased towards the training dataset
+
+```markdown
+![my_image](figures/training_model.png)
+```
 
 ### Question 15
 
@@ -353,7 +379,10 @@ We used DVC for data storage of the raw data, this was mainly a choice as it isn
 >
 > Answer:
 
---- question 17 fill here ---
+First of all, for giving grant to teammates, IAM & admin was in use. Next, compute engine was used for
+building VM(Virtual Machine) instances, and cloud build was in use for buidling triggers. For checking if images
+are stored correctly as a consequence of trigger, container registry was in use. For storing data related to the
+project, cloud storage was also in use, for creating and managing buckets.
 
 ### Question 18
 
@@ -368,7 +397,11 @@ We used DVC for data storage of the raw data, this was mainly a choice as it isn
 >
 > Answer:
 
---- question 18 fill here ---
+Basically, we used computer engine for building VM instance.
+By cloning our project's github repository, we could train the modle on VM and also mounted and unmounted the buckets cloud as well.
+Since the account owner gave grants to other teammates, each of teammate could access to VM with his or her own username.
+Looking into machine configuration, our main instance's type is n1-standard-1, and GPUs is specified as '1 x NVIDIA V100'.
+We also had the other instance using CPU, but there was a problem with training the model on VM so we had discarded it and moved to the main instance which uses GPU, then the error during the training was not occurred.
 
 ### Question 19
 
@@ -475,7 +508,12 @@ We used DVC for data storage of the raw data, this was mainly a choice as it isn
 >
 > Answer:
 
---- question 26 fill here ---
+Our main struggle was using the cloud and especially in combination with Docker.
+The first problem we encountered was that two members out of five ran out of credits straight away on google cloud (and weren't able to tell why).
+Having to master both VMs and buckets was a major challenge, and even though the course material on this subject was super nicely made we still felt like we lacked a basic understanding of the clound and the services. Another point was the general confusion about when to use DVC and buckets.
+Understanding GitHub actions and how to integrate it into the project was challenging. Generally dealing with many different tools and configuration files were difficult, lots and lots of debugging.
+When using docker the error messages were not always present and having to build the image from almost scratch each time took a very long time.  Also, we found the lack of TA help and the always long queue for help a bit of a hassle as we were stuck in problems for long periods of time.
+Being five people working on a relatively small project was also a challenge, but by using branching we did manage to avoid huge merge conflicts.
 
 ### Question 27
 
