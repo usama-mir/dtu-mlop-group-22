@@ -258,7 +258,7 @@ We had a lot of branches for our project. We started by defining a branch naming
 >
 > Answer:
 
-We started by using DVC and initially it worked really well and made it easier to push and pull our data as that were stored elsewhere. Along the way we ended up with quite a lot of issues since there were issues with the versions and this ultimately meant we weren’t able to use the features that much more since dvc crashed everytime. We ended moving everything to the git bucket instead to be used there without dvc.
+We started by using DVC and initially it worked really well and made it easier to push and pull our data as that were stored elsewhere. Along the way we ended up with quite a lot of issues since there were issues with the versions and this ultimately meant we weren’t able to use the features that much more since dvc crashed everytime. We ended moving everything to the gpc bucket instead to be used there without dvc. it proved to be quite a mess once you have set everything up in your github project to remove different files and because of that there is still some legacy files left from the days of dvc.
 
 ### Question 11
 
