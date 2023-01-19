@@ -335,7 +335,7 @@ wandb.log({“Training loss”: loss/len(Train_DL)})
 The loss is then logged after each batch for every epoch. In the case of the validation loss, we use a separate dataset, that helps us evaluate the capability of the model to infer on new data, and see if the training is biased towards the training dataset
 
 ```markdown
-![my_image](figures/training_model.png)
+![train_model](figures/training_model.png)
 ```
 
 ### Question 15
@@ -414,7 +414,13 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
---- question 19 fill here ---
+```markdown
+![bucket_1](figures/bucket_1.png)
+```
+
+```markdown
+![bucket_2](figures/bucket_2.png)
+```
 
 ### Question 20
 
@@ -423,7 +429,9 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
---- question 20 fill here ---
+```markdown
+![container_reg](figures/container_reg.png)
+```
 
 ### Question 21
 
@@ -432,7 +440,9 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer:
 
---- question 21 fill here ---
+```markdown
+![cloud_hist](figures/build_history.png)
+```
 
 ### Question 22
 
