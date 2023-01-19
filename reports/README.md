@@ -351,7 +351,8 @@ The loss is then logged after each batch for every epoch. In the case of the val
 >
 > Answer:
 
---- question 15 fill here ---
+Docker were used to both train and deploy the trained model with a small backed application. The docker containers were initially taught to be easily deployable but we had many issues with the training dying all the time. We found out that the model we were using needed 12 gb of memory to be able to run. Afterwards we have used two images. We initially wanted to use a combination of makefiles and docker-compose to run our different images but we didn’t get to that due to time constraints.
+
 
 ### Question 16
 
@@ -366,7 +367,7 @@ The loss is then logged after each batch for every epoch. In the case of the val
 >
 > Answer:
 
---- question 16 fill here ---
+We used the built in python debugger and we used traced once during the project. Otherwise we were having issues with docker, github actions and the gpc where it probved to be a lot harder to use proper debugging tools. A good workaround for github actions were to do the bash scripting locally first, get it to work and then run it on the workflow file. With the gpc we had the logfiles for the different servics and otherwise the documentation helped us as well. Docker we learned that when no output is coming with an error message - increase the memory!
 
 ## Working in the cloud
 
