@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/dtu-mlop-group-22/project_testing_1801', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/dtu-mlop-group-22/project_testing_1801']
