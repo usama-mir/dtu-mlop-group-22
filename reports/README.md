@@ -274,7 +274,20 @@ We used DVC for data storage of the raw data, this was mainly a choice as it isn
 >
 > Answer:
 
---- question 12 fill here ---
+We used hydra to configure the hyperparameters from a config.yaml file, that has the following format:
+
+hyperparameters:
+  batch_size: 64
+  lr: 0.01
+  epochs: 10
+  step_size: 212
+  gamma: 0.1
+  n_classes: 7
+
+The file was then imported using a decorator in the main function from train_model.py in the following way:
+
+@hydra.main(config_name="config.yaml")
+def main(cfg:Dict) -> None:
 
 ### Question 13
 
