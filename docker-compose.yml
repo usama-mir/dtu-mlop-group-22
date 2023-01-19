@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+
+  training:
+    build:
+      dockerfile: ./images/training/Dockerfile
+      context: .
