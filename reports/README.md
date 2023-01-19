@@ -537,4 +537,6 @@ Being five people working on a relatively small project was also a challenge, bu
 >
 > Answer:
 
---- question 27 fill here ---
+
+We tried to do some pair programming for multiple tasks. S134187 set up the initial project in cookiecutter as well as set up the github repository. S184424 set up dvc and both worked on docker for containarization as well as github actions. s222433 and s183190 looked at unittests, gpc for deployment as well as the API and made the model in general. S221623 looked at hydra, distributed dataloading and training the model on the HPC as well as helped out with a lot of the other tasks when needed.
+      
