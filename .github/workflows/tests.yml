@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-
+    
     runs-on: ubuntu-latest
 
     steps:
@@ -24,12 +24,13 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements_tests.txt
     
-    - uses: iterative/setup-dvc@v1
+    - uses: 'actions/checkout@v3'
     
-    - name: Get data
-      run: dvc pull
-      env:
-        GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_SERVICE_ACCOUNT }}'
         
     - name: Test with pytest
       run: |
