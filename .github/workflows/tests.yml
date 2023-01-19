@@ -34,6 +34,7 @@ jobs:
         
     - name: Test with pytest
       run: |
+        gcloud auth activate-service-account --key-file '${{ secrets.GCLOUD_SERVICE_ACCOUNT }}'
         gsutil cp gs://group-22-bucket/jigsaw-toxic-comment-classification-challenge/* ./data/raw/
         pip install pytest coverage
         coverage run -m pytest tests/
