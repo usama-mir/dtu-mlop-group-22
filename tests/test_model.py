@@ -2,7 +2,6 @@ from transformers import DistilBertTokenizer
 import torch
 import sys
 
-'''
 sys.path.insert(0, "src")
 
 
@@ -31,4 +30,3 @@ def test_forward():
 
     print(output.logits.shape)
     assert expected_shape == output.logits.shape, "Different shape"
-'''

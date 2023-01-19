@@ -1,7 +1,5 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Response
 import torch
-import sys
-import os
 from transformers import DistilBertTokenizer
 import numpy as np
 

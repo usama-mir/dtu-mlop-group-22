@@ -56,40 +56,41 @@ end of the project.
 * [x] Create the initial file structure using cookiecutter
 * [x] Fill out the `make_dataset.py` file such that it downloads whatever data you need and
 * [x] Add a model file and a training script and get that running (M)
-* [ ] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using (N)
+* [x] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using (N)
 * [x] Remember to comply with good coding practices (`pep8`) while doing the project (Pol)
 * [x] Do a bit of code typing and remember to document essential parts of your code (Pol)
 * [x] Setup version control for your data or part of your data
-* [ ] Construct one or multiple docker files for your code (U, N)
+* [x] Construct one or multiple docker files for your code (U, N)
 * [ ] Build the docker files locally and make sure they work as intended (U, N)
-* [ ] Write one or multiple configurations files for your experiments (Pol)
-* [ ] Used Hydra to load the configurations and manage your hyperparameters (Pol)
+* [x] Write one or multiple configurations files for your experiments (Pol)
+* [x] Used Hydra to load the configurations and manage your hyperparameters (Pol)
 * [ ] When you have something that works somewhat, remember at some point to to some profiling and see if
       you can optimize your code (Pol)
-* [ ] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
+* [x] Use Weights & Biases to log training progress and other important metrics/artifacts in your code. Additionally,
       consider running a hyperparameter optimization sweep. (Pol)
 * [ ] Use Pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code 
+* [x] Rewrite 'predict' (Pol)
 
 ### Week 2
 
-* [ ] Write unit tests related to the data part of your code (S)
-* [ ] Write unit tests related to model construction and or model training
-* [ ] Calculate the coverage.
-* [ ] Get some continuous integration running on the github repository
-* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
-* [ ] Create a trigger workflow for automatically building your docker images
-* [ ] Get your model training in GCP using either the Engine or Vertex AI
-* [ ] Create a FastAPI application that can do inference using your model
+* [x] Write unit tests related to the data part of your code (S)
+* [x] Write unit tests related to model construction and or model training (M, S)
+* [x] Calculate the coverage. (S, M)
+* [x] Get some continuous integration running on the github repository (U,N)
+* [ ] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup (N)
+* [ ] Create a trigger workflow for automatically building your docker images (U,N)
+* [ ] Get your model training in GCP using either the Engine or Vertex AI 
+* [x] Create a FastAPI application that can do inference using your model
 * [ ] If applicable, consider deploying the model locally using torchserve
 * [ ] Deploy your model in GCP using either Functions or Run as the backend
 
 ### Week 3
 
-* [ ] Check how robust your model is towards data drifting
-* [ ] Setup monitoring for the system telemetry of your deployed model
+* [ ] Check how robust your model is towards data drifting (U)
+* [ ] Setup monitoring for the system telemetry of your deployed model 
 * [ ] Setup monitoring for the performance of your deployed model
 * [ ] If applicable, play around with distributed data loading
-* [ ] If applicable, play around with distributed model training
+* [ ] If applicable, play around with distributed model training (Pol)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
 ### Additional
@@ -105,7 +106,7 @@ end of the project.
 >
 > Answer:
 
---- question 1 fill here ---
+Group 22
 
 ### Question 2
 > **Enter the study number for each member in the group**
@@ -116,7 +117,7 @@ end of the project.
 >
 > Answer:
 
---- question 2 fill here ---
+s184424, s134187, s222433, s183190, s221623
 
 ### Question 3
 > **What framework did you choose to work with and did it help you complete the project?**
@@ -129,7 +130,7 @@ end of the project.
 >
 > Answer:
 
---- question 3 fill here ---
+cookie-clutter, github, dvc, docker, hydra, wardb, pytest, gcp-bucket, google cloud, fastAPI
 
 ## Coding environment
 
@@ -148,7 +149,7 @@ end of the project.
 >
 > Answer:
 
---- question 4 fill here ---
+We created a requirements.txt file using pipreqs, which means that only the dependencies we are actually using are included in the file. If a new team member joined the team, they simply needed to create an environment, we recommend a conda-environment, and run the following command to get the dependencies: 'pip install -r requirements.txt'
 
 ### Question 5
 
@@ -212,7 +213,7 @@ end of the project.
 
 ### Question 9
 
-> **Did you workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and**
+> **Did your workflow include using branches and pull requests? If yes, explain how. If not, explain how branches and**
 > **pull request can help improve version control.**
 >
 > Answer length: 100-200 words.
@@ -223,7 +224,7 @@ end of the project.
 >
 > Answer:
 
---- question 9 fill here ---
+We used branching-strategy which means that every feature was created on separated braches and later merged into the main branch. It wasn't allowed to push directly to main after the first week. We put a branch protection rule on main, which ensure no accidents. Besides that we used github actions to make sure new code passed the unit-tests before pushing.
 
 ### Question 10
 
@@ -238,7 +239,7 @@ end of the project.
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC for data storage of the raw data, this was mainly a choice as it isn't nice to have the datafiles stored on GitHub. Also, since we're working with text-data and there's a million different ways to clean up the data, it's super easy to add some extra cleaning steps in the make_dataset.py file. 
 
 ### Question 11
 
@@ -273,7 +274,20 @@ end of the project.
 >
 > Answer:
 
---- question 12 fill here ---
+We used hydra to configure the hyperparameters from a config.yaml file, that has the following format:
+
+hyperparameters:
+  batch_size: 64
+  lr: 0.01
+  epochs: 10
+  step_size: 212
+  gamma: 0.1
+  n_classes: 7
+
+The file was then imported using a decorator in the main function from train_model.py in the following way:
+
+@hydra.main(config_name="config.yaml")
+def main(cfg:Dict) -> None:
 
 ### Question 13
 

@@ -2,7 +2,7 @@ import sys
 import os
 import wandb
 
-sys.path.append("./src/data")
+sys.path.append("./src")
 
 import hydra
 from hydra.utils import get_original_cwd
@@ -11,9 +11,9 @@ from tqdm import tqdm
 from torch.nn import BCELoss
 from torch.optim.lr_scheduler import StepLR
 import torch
-from model import Distil_bert
+from models.model import Distil_bert
 import pandas as pd
-from dataset import Toxic_Dataset
+from data.dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 import torch.nn as nn
@@ -34,6 +34,10 @@ class ModelTrainer(nn.Module):
         self.model = model
         self.optimizer = Adam(params=model.parameters(), lr=cfg.hyperparameters.lr)
         self.Loss = BCELoss()
+
+        #self.scheduler = StepLR(self.optimizer, step_size=212, gamma=0.1)
+        self.epochs = 2  # epochs
+
         self.scheduler = StepLR(self.optimizer, step_size=cfg.hyperparameters.step_size, gamma=cfg.hyperparameters.gamma)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.epochs = cfg.hyperparameters.epochs  
@@ -54,6 +58,7 @@ class ModelTrainer(nn.Module):
         val_acc_epochs = []
         val_loss_epochs = []
 
+        print('Training..')
         for epoch in range(self.epochs):
             print(epoch)
             training_loss = {}
@@ -70,6 +75,7 @@ class ModelTrainer(nn.Module):
                 input_ids = (
                     comments["input_ids"].squeeze(1).to(self.device)
                 )  # contains the tokenized and indexed representation for a batch of comments
+
                 output = self.model(input_ids, masks)  # vector of logits for each class
                 loss = self.Loss(output.logits, labels)  # compute the loss
 
