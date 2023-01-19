@@ -19,6 +19,10 @@ from torch.utils.data import DataLoader
 import torch.nn as nn
 from typing import Dict
 import time
+from torch.nn.parallel import DistributedDataParallel as DDP
+
+
+SEED = 42
 
 
 class ModelTrainer(nn.Module):
@@ -156,11 +160,33 @@ class ModelTrainer(nn.Module):
 
 @hydra.main(config_name="config.yaml")
 def main(cfg:Dict) -> None:
+    parser = ArgumentParser('DDP usage example')
+    parser.add_argument('--local_rank', type=int, default=-1, metavar='N', help='Local process rank.')  # you need this argument in your scripts for DDP to work
+    args = parser.parse_args()
+
+    # keep track of whether the current process is the `master` process (totally optional, but I find it useful for data laoding, logging, etc.)
+    args.is_master = args.local_rank == 0
+
+    # set the device
+    args.device = torch.cuda.device(args.local_rank)
+
+    dist.init_process_group(backend='nccl', init_method='env://')
+    torch.cuda.set_device(args.local_rank)
+
+    # set the seed for all GPUs (also make sure to set the seed for random, numpy, etc.)
+    torch.cuda.manual_seed_all(SEED)
+
     start_time = time.time()
     wandb.init(project="test-project", entity="dtu_mloperations")
     wandb.config = cfg
 
-    trainer = ModelTrainer(cfg, Distil_bert)
+    # model = torch.nn.DataParallel(Distil_bert, device_ids=[0, 1]) # data parallel on gpu 0 and 1
+    model = DDP(
+        Distil_bert,
+        device_ids=[args.local_rank],
+        output_device=args.local_rank
+    )
+    trainer = ModelTrainer(cfg, model)
     # now run the data through the toxic dataset
     # then call the train function and hope for the best
     original_cwd = get_original_cwd()
