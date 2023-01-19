@@ -258,7 +258,7 @@ We had a lot of branches for our project. We started by defining a branch naming
 >
 > Answer:
 
-We started by using DVC and initially it worked really well and made it easier to push and pull our data as that were stored elsewhere. Along the way we ended up with quite a lot of issues since there were issues with the versions and this ultimately meant we weren’t able to use the features that much more since dvc crashed everytime. We ended moving everything to the git bucket instead to be used there without dvc.
+We started by using DVC and initially it worked really well and made it easier to push and pull our data as that were stored elsewhere. Along the way we ended up with quite a lot of issues since there were issues with the versions and this ultimately meant we weren’t able to use the features that much more since dvc crashed everytime. We ended moving everything to the gpc bucket instead to be used there without dvc. it proved to be quite a mess once you have set everything up in your github project to remove different files and because of that there is still some legacy files left from the days of dvc.
 
 ### Question 11
 
@@ -274,7 +274,7 @@ We started by using DVC and initially it worked really well and made it easier t
 >
 > Answer:
 
-We have set up GitHub actions to do CI. We only tested the code on a ubuntu machine since we are going to run our code on linux machines only. The CI was set to be triggered on PRs and pushes to the main branch and mainly it took care of the unittesting of our code. It proved to be quite a hassle as we were having many issues with DVC and afterwards had to change to google cloud bucket. Although it looked easy to just change the code we ended moving our data manually to google cloud bucket. Then we had to create a google service account to be able to pull the data. For this to work we created a small bashscript that takes the authentication file from secrets and uses It to establish a connection to the google cloud and from there we can pull our data into our CI to do the tests.
+We have set up GitHub actions to do CI. We only tested the code on a ubuntu machine since we are going to run our code on linux machines only. The CI was set to be triggered on PRs and pushes to the main branch and mainly it took care of the unittesting of our code. It proved to be quite a hassle as we were having many issues with DVC and afterwards had to change to google cloud bucket. Although it looked easy to just change the code we ended moving our data manually to google cloud bucket. Then we had to create a google service account to be able to pull the data. Apparently this was harder than first intended. compared to the dvc we had to first generate an access token for the service account. This could only be used by the gsus command in a file so we had to load it in a bashscript whereafter we were able to download our files to the respective folders for the unittests to be performed.  This were all done as a part of the github workflow file. In the end it worked but we were unsure whether it was the smartest way to use.
 
 ## Running code and tracking experiments
 
