@@ -13,7 +13,7 @@ from torch.optim.lr_scheduler import StepLR
 import torch
 from models.model import Distil_bert
 import pandas as pd
-from dataset import Toxic_Dataset
+from data.dataset import Toxic_Dataset
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 import torch.nn as nn
@@ -58,6 +58,7 @@ class ModelTrainer(nn.Module):
         val_acc_epochs = []
         val_loss_epochs = []
 
+        print('Training..')
         for epoch in range(self.epochs):
             print(epoch)
             training_loss = {}
@@ -75,21 +76,13 @@ class ModelTrainer(nn.Module):
                     comments["input_ids"].squeeze(1).to(self.device)
                 )  # contains the tokenized and indexed representation for a batch of comments
 
-                print('Masks: ', masks)
                 output = self.model(input_ids, masks)  # vector of logits for each class
-                print('Output: ', output)
                 loss = self.Loss(output.logits, labels)  # compute the loss
 
-                print('Labels: ', labels)
                 self.optimizer.zero_grad()
-                print('Made it to AFTER optimizer')
                 loss.backward()
-                print('Wuhuu did the backward!')
                 self.optimizer.step()
-                print('Took a opt step')
                 self.scheduler.step()
-                print('Took a scheduler step!')
-
 
                 print(f" Train Loss:{loss/len(Train_DL):.4f}")
                 wandb.log({"Training loss": loss/len(Train_DL)})
