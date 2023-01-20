@@ -451,7 +451,7 @@ We also had the other instance using CPU, but there was a problem with training 
 >
 > Answer: 
 
-Basically, model deployment was not successful. First time, there was an memory exceed problem.
+Basically, model deployment was not successful on cloud, but worked on local machine. In the case of local machine, we could enter to the link by using "uvicorn --reload --port 8000 main:app", and we entered '/docs; link. By typing toxic words or sentences, it showed the result the way the input is toxic. In the case of goolge cloud, there was an memory exceed problem.
 Therefore we increased the memory for dealing with that, but there was a problem with module, pytorch.
 In requirements.txt file, torch was included, but it could not solve the problem.
 
